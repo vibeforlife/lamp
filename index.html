@@ -899,7 +899,7 @@ async function boot(){
       },'Copying…','Link Copied ✓',2500);
     }catch(_){error('inviteError','Copying was blocked by the browser. You can select and copy the link above.')}
   };
-  qs('summonCancel').onclick=()=>hide('summonChooser');qs('summonSend').onclick=sendSummon;qs('modeFirstAccepts').onclick=()=>setResponseMode('first_accepts');qs('modeEveryoneResponds').onclick=()=>setResponseMode('everyone_responds');qs('genieAccept').onclick=()=>respondSummon('accepted');qs('genieReject').onclick=()=>respondSummon('rejected');qs('genieHistory').onclick=()=>{hide('genieSummon');openHistory(true)};
+  qs('summonCancel').onclick=()=>hide('summonChooser');qs('summonSend').onclick=sendSummon;qs('modeFirstAccepts').onclick=()=>setResponseMode('first_accepts');qs('modeEveryoneResponds').onclick=()=>setResponseMode('everyone_responds');qs('genieAccept').onclick=()=>respondSummon('accepted');qs('genieReject').onclick=()=>respondSummon('maybe_later');qs('genieHistory').onclick=()=>{hide('genieSummon');openHistory(true)};
 
   const params=new URLSearchParams(location.search);
   const token=params.get('join');
