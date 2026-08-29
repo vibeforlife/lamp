@@ -1,0 +1,44 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function self(uid) { return signedIn() && request.auth.uid == uid; }
+
+    // Client writes are intentionally routed through authenticated callable functions.
+    // This keeps Circle membership, invitations, and summons authorization server-side.
+    match /circles/{circleId} {
+      allow read: if signedIn() && exists(/databases/$(database)/documents/circles/$(circleId)/members/$(request.auth.uid));
+      allow write: if false;
+
+      match /members/{memberId} {
+        allow read: if signedIn() && exists(/databases/$(database)/documents/circles/$(circleId)/members/$(request.auth.uid));
+        allow write: if false;
+      }
+
+      match /summons/{summonId} {
+        allow read: if signedIn() && (
+          resource.data.senderUid == request.auth.uid ||
+          request.auth.uid in resource.data.recipientUids
+        );
+        allow write: if false;
+
+        match /responses/{memberId} {
+          allow read: if signedIn() && (
+            memberId == request.auth.uid ||
+            get(/databases/$(database)/documents/circles/$(circleId)/summons/$(summonId)).data.senderUid == request.auth.uid
+          );
+          allow write: if false;
+        }
+      }
+    }
+
+    match /users/{uid} {
+      // Private device/notification metadata is written only by trusted Functions.
+      allow read, write: if false;
+    }
+
+    match /invitations/{invitationId} {
+      allow read, write: if false;
+    }
+  }
+}

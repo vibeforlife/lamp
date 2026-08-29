@@ -1,0 +1,13 @@
+{
+  "name": "Magic Lamp",
+  "short_name": "Magic Lamp",
+  "start_url": "./magic_lamp.html",
+  "display": "standalone",
+  "background_color": "#02030a",
+  "theme_color": "#02030a",
+  "description": "Rub the lamp. Make a wish. Summon your Genies.",
+  "icons": [
+    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
+    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
+  ]
+}
